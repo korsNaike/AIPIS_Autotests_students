@@ -113,12 +113,12 @@ def test_error_email():
     data = {
         "student": response_body["info"][0]
     }
-    print(f"Создали студента с id={student_id}, пытаемся отправить PUT")
 
     data["student"]["fcontact"] = generate_fake_data_contacts(withPhone=False, withTelegram=False)
     data["student"]["fcontact"]["femail"]["email"] = "gasasdasd"
 
     response = requests.put(url=URL_PUT_STUDENT + str(student_id), json=data)
+    response_body = response.json()
 
     assert response.status_code == 202
     assert response_body["errorFields"][0]["message"] == "Invalid email format"
@@ -134,12 +134,12 @@ def test_error_phone():
     data = {
         "student": response_body["info"][0]
     }
-    print(f"Создали студента с id={student_id}, пытаемся отправить PUT")
 
     data["student"]["fcontact"] = generate_fake_data_contacts(withEmail=False, withTelegram=False)
     data["student"]["fcontact"]["fphone"]["phone"] = "gasasdasd"
 
     response = requests.put(url=URL_PUT_STUDENT + str(student_id), json=data)
+    response_body = response.json()
 
     assert response.status_code == 202
     assert response_body["errorFields"][0]["message"] == "Invalid phone format"
@@ -154,12 +154,12 @@ def test_error_telegram():
     data = {
         "student": response_body["info"][0]
     }
-    print(f"Создали студента с id={student_id}, пытаемся отправить PUT")
 
     data["student"]["fcontact"] = generate_fake_data_contacts(withPhone=False, withEmail=False)
     data["student"]["fcontact"]["ftelegram"]["telegram"] = "-@!"
 
     response = requests.put(url=URL_PUT_STUDENT + str(student_id), json=data)
+    response_body = response.json()
 
     assert response.status_code == 202
     assert response_body["errorFields"][0]["message"] == "Invalid telegram format"
@@ -174,12 +174,12 @@ def test_error_git():
     data = {
         "student": response_body["info"][0]
     }
-    print(f"Создали студента с id={student_id}, пытаемся отправить PUT")
 
     data["student"]["fgit"] = generate_fake_data_git()
     data["student"]["fgit"]["git"] = "-@!"
 
     response = requests.put(url=URL_PUT_STUDENT + str(student_id), json=data)
+    response_body = response.json()
 
     assert response.status_code == 202
     assert response_body["errorFields"][0]["message"] == "Invalid git format"
@@ -194,11 +194,10 @@ def test_404_error():
     data = {
         "student": response_body["info"][0]
     }
-    print(f"Создали студента с id={student_id}, пытаемся отправить PUT")
 
     data["student"]["fgit"] = generate_fake_data_git()
 
-    response = requests.put(url=URL_PUT_STUDENT + "2000000000000000000000", json=data)
+    response = requests.put(url=URL_PUT_STUDENT + "20000000000", json=data)
 
     assert response.status_code == 201
 
